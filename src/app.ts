@@ -15,8 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 /* ---------- ROUTES ---------- */
-app.use('/api/projects', projectRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
+
 
 /* ---------- HEALTH CHECK ---------- */
 app.get('/ping', (_, res) => res.send('pong'));

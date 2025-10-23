@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:13
+    container_name: postgres13
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db_gis
+      POSTGRES_USER: user_gis
+      POSTGRES_PASSWORD: gisPASS
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg13_data:/var/lib/postgresql/data
+      - ./gis_mvp/sql/001-init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+
+volumes:
+  pg13_data:
+

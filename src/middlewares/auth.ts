@@ -8,27 +8,9 @@ export interface AuthRequest extends Request {
     user: User; // en lugar de {id, email}
 }
 
-// req se tipa con el genérico Request, no con AuthRequest
-/* const user = await getUserById(decoded.sub);
-if (!user) throw new Error('User not found');
-req.user = user; */
-/* const auth = (req: Request, res: Response, next: NextFunction): void => {
-    const hdr = req.headers.authorization;
-    if (!hdr) {
-        res.status(401).json({ message: 'Missing token' });
-        return;
-    }
+interface JWTPayload { sub: string; email?: string; iat?: number; exp?: number; }
 
-    const token = hdr.replace('Bearer ', '');
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET) as any;
-        // Cast explícito a AuthRequest para añadir la propiedad user
-        (req as AuthRequest).user = { id: decoded.sub, email: decoded.email };
-        next();
-    } catch {
-        res.status(401).json({ message: 'Invalid token' });
-    }
-}; */
+
 export const auth = async (
     req: AuthRequest,
     res: Response,
@@ -38,9 +20,11 @@ export const auth = async (
     if (!hdr) { res.status(401).json({ message: 'Missing token' }); return; }
 
     const token = hdr.replace('Bearer ', '');
+    console.log(token)
     try {
-        const decoded = jwt.verify(token, JWT_SECRET) as any;
+        const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
         const user = await getUserById(decoded.sub);
+        console.log('[Auth] JWT sub:', decoded.sub, '| User:', user ? 'FOUND' : 'NOT_FOUND');
         if (!user) { res.status(401).json({ message: 'User not found' }); return; }
 
         req.user = user; // ⬅️ ahora sí es User completo

@@ -1,15 +1,15 @@
 // src/models/Project.ts
-export interface Project {
-    id: string;
-    name: string;
-    description: string;
-    deadline: Date;
-    crs: string;          // “EPSG:XXXX”
-    ownerId: string;          // FK → users.id
-    status: 'active' | 'archived';
-    createdAt: Date;
-    updatedAt: Date;
-}
+export type ProjectStatus = 'Active' | 'Inactive' | 'Completed' | 'Cancelled';
 
-export type CreateProjectDto = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdateProjectDto = Partial<CreateProjectDto>;
+export interface Project {
+    id: number;
+    organization_id: number;
+    name: string;
+    description: string | null;
+    due_date: string | null;
+    responsible: string | null;
+    crs: string;
+    status: ProjectStatus;
+    created_at: string;
+    updated_at: string;
+}

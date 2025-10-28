@@ -1,15 +1,20 @@
 // src/models/Task.ts
+export type TaskStatus = 'ToDo' | 'Doing' | 'Done';
+
 export interface Task {
-    id: string;
+    id: number;
+    project_id: number;
     title: string;
-    description?: string;
-    status: 'pending' | 'in-progress' | 'completed';
-    priority: 'low' | 'medium' | 'high';
-    dueDate?: Date;
-    projectId: string; // FK
-    assignedTo?: string; // FK → users.id
-    createdAt: Date;
-    updatedAt: Date;
+    description: string | null;
+    status: TaskStatus;
+    due_date: string | null;
+    assignee: string | null;
+    start_date: string | null;
+    end_date: string | null;
+    responsible: string | null;
+    closed_at: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
 export type CreateTaskDto = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>;

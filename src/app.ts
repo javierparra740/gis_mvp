@@ -21,7 +21,7 @@ app.use(cors({ origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localh
 // Rate Limiting: Global (ajusta por endpoint si necesitas)
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 min
-    max: 100, // Límite por IP
+    max: 1000, // Límite por IP
 });
 app.use(limiter);
 

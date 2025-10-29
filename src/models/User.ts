@@ -5,6 +5,7 @@ export interface User {
     id: number;
     email: string;
     password_hash: string;
+    name: string;
     role: UserRole;
     organization_id: number | null;
     created_at: string;

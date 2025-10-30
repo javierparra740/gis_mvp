@@ -7,7 +7,11 @@ export const registerUser = async (
     dto: Pick<User, 'email' | 'name' | 'role'> & { rawPassword: string }
 ): Promise<User> => {
     const hashed = await bcrypt.hash(dto.rawPassword, 12);
-    return repo.insert({ email: dto.email, password: hashed, name: dto.name, role: dto.role });
+    return repo.insert({
+        email: dto.email, password_hash: hashed, name: dto.name, role: dto.role,
+        organization_id: null,
+        created_at: ''
+    });
 };
 
 export const validatePassword = async (
@@ -16,7 +20,7 @@ export const validatePassword = async (
 ): Promise<User | null> => {
     const user = await repo.findByEmail(email);
     if (!user) return null;
-    const ok = await bcrypt.compare(rawPassword, user.password);
+    const ok = await bcrypt.compare(rawPassword, user.password_hash);
     return ok ? user : null;
 };
 

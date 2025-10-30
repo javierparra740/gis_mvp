@@ -11,7 +11,7 @@ export const getProject = async (id: string): Promise<Project | null> => repo.fi
 export const createProject = async (dto: CreateProjectDto, byUserId: string): Promise<Project> => {
     ProjectValidator.create(dto);
     const created = await repo.insert(dto);
-    await logAudit({ action: AuditAction.PROJECT_CREATE, projectId: created.id, byUserId });
+    await logAudit({ action: AuditAction.PROJECT_CREATE, projectId: (created.id).toString(), byUserId });
     return created;
 };
 
@@ -38,7 +38,8 @@ export const cloneProject = async (id: string, byUserId: string): Promise<Projec
     const payload: CreateProjectDto = {
         ...original,
         name: ProjectMapper.cloneName(original.name),
-        status: 'active',
+        status: 'Active',
+        organizationId: ''
     };
     return createProject(payload, byUserId);
 };

@@ -13,3 +13,14 @@ export interface Project {
     created_at: string;
     updated_at: string;
 }
+export interface CreateProjectDto {
+    organizationId: string;
+    name: string;
+    description?: string | null;
+    dueDate?: string | null;
+    responsible?: string | null;
+    crs: string;
+    status?: ProjectStatus;
+}
+
+export interface UpdateProjectDto extends Partial<CreateProjectDto> { }

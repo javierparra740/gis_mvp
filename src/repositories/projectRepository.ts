@@ -12,9 +12,10 @@ export const findById = async (id: string): Promise<Project | null> =>
 
 export const insert = async (p: CreateProjectDto): Promise<Project> => {
     const { rows } = await pool.query(
-        `INSERT INTO projects(name, description, deadline, crs, owner_id, status)
-     VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-        [p.name, p.description, p.deadline, p.crs, p.ownerId, p.status || 'active']
+        `INSERT INTO projects (organization_id, name, description, due_date, responsible, crs, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING *`,
+    [p.organizationId, p.name, p.description, p.dueDate, p.responsible, p.crs, p.status || 'active']
     );
     return rows[0];
 };
